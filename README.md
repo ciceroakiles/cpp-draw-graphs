@@ -1,4 +1,4 @@
-# # Gráficos de funções com C++ e graphics.h
+# Gráficos de funções com C++ e graphics.h
 
 Se uma imagem vale mais que mil palavras, eis então dois exemplos do que a aplicação é capaz de fazer:
 
