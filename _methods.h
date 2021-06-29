@@ -1,6 +1,6 @@
 #include "__funct.h"
 /*
- * Métodos que retornam funções
+ * Métodos que retornam objetos do tipo Função
  */
 
 // Retorna uma função de grau 1 ou 2 (adiciona os pontos sequencialmente)
@@ -33,13 +33,13 @@ Funct circle_t2(double params[]) {
 }
 
 /*
- * Métodos para desenho de grade
+ * Métodos de desenho geral
  */
 
 // Desenho da grade
 void show_grid() {
 	setcolor(GRID_COLOR);
-    floodfill(0, 0, GRID_COLOR);
+	floodfill(0, 0, GRID_COLOR);
 	// Linhas
 	for (int i = 0; i <= WIDTH; i += scale) {
 		line(i, 0, i, HEIGHT);
@@ -53,7 +53,7 @@ void show_grid() {
 	line(WIDTH/2, 0, WIDTH/2, HEIGHT);
 }
 
-// Redesenhar tudo
+// Redesenho de tudo
 void redraw(vector<Funct> &vf) {
 	cleardevice();
 	show_grid();

@@ -10,7 +10,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-// Menu
+// Método de impressão (opções do menu)
 void print_options() {
 	cout << "Dimensoes: " << WIDTH << "x" << HEIGHT << "px" << endl;
 	//cout << "[0] test" << endl;
@@ -26,6 +26,7 @@ void print_options() {
 	cout << ">";
 }
 
+// Loop principal
 void input(vector<Funct> &vf) {
 	bool no_graph = false, success = false;
 	double abc[] = {0, 0, 0};
