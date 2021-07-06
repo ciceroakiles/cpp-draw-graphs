@@ -25,8 +25,7 @@ Funct polinomial_tn(vector<double> t) {
 }
 
 // Retorna uma função do tipo círculo
-Funct circle_t2(vector<double> t) { //double params[]) {
-	// params[0]: x_cen, params[1]: y_cen, params[2]: r
+Funct circle_t2(vector<double> t) {
 	Funct fn;
 	Point p(t[0], t[1]);
 	p.set_radius(t[2]);
@@ -36,7 +35,7 @@ Funct circle_t2(vector<double> t) { //double params[]) {
 }
 
 /*
- * Métodos de desenho geral
+ * Métodos de desenho geral, verificação e teste
  */
 void tests();
 
@@ -75,15 +74,15 @@ void redraw(vector<Funct> &vf, vector<Point> &ps) {
 	}
 }
 
-void tests() {
-	
-}
-
 // Verifica se um ponto aparece no gráfico
 bool isDisplayed(Point p) {
 	bool x_ok, y_ok;
 	x_ok = ((p.getX() >= -WIDTH/2) && (p.getX() <= WIDTH/2) ? true : false);
 	y_ok = ((p.getY() >= -HEIGHT/2) && (p.getY() <= HEIGHT/2) ? true : false);
 	return (x_ok && y_ok);
+}
+
+void tests() {
+	
 }
 
