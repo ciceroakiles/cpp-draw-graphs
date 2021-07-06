@@ -1,4 +1,5 @@
 #include "___globals.h"
+
 /*
  * Declaração e definição da classe Ponto
  */
@@ -24,7 +25,7 @@ class Point {
 		Point(double x_param, double y_param) {
 		    x = x_param;
 		    y = y_param;
-		    r = pt_r;
+		    r = POINT_R;
 		}
 
 	    // Função circle refeita de acordo com o sistema de coordenadas

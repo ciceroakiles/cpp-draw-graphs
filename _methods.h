@@ -1,32 +1,52 @@
+#include <math.h>
 #include "__funct.h"
+
 /*
  * Métodos que retornam objetos do tipo Função
  */
 
-// Retorna uma função de grau 1 ou 2 (adiciona os pontos sequencialmente)
-Funct polinomial_t2(double params[]) {
-	// params[0]: a, params[1]: b, params[2]: c
-	Funct fn;                                  // Função que vai receber os pontos
-	double step = (params[0] == 0) ? 1 : 0.25; // Intervalo de precisão entre os pontos
-   	double x2, y1, y2, lim = WIDTH/2;          // Limites superior e inferior (metade da largura da janela)
-   	for (double x1 = -lim; x1 < lim; x1 += step) {
-   		x2 = x1 + step;
-   		y1 = params[0]*x1*x1 + params[1]*x1 + params[2];
-   		y2 = params[0]*x2*x2 + params[1]*x2 + params[2];
-		Point p1(x1, y1);
-	   	Point p2(x2, y2);
-	   	fn.addPoint(p1);
-	   	fn.addPoint(p2);
+// Retorna uma função de grau n
+Funct polinomial_tn(vector<double> t) {
+	Funct fn;                          // Função que vai receber os pontos
+	int n = t.size()-1;                // Grau máximo
+	double step = (n == 1) ? 1 : 0.25; // Intervalo de precisão entre os pontos
+	double lim = WIDTH/2;              // Limites superior e inferior (metade da largura da janela)
+   	double x, y;
+	for (x = -lim; x < lim; x += step) {
+   		y = 0;
+   		// Soma dos termos t(i)x^(n-i)
+		for (int i = 0; i <= n; i++) {
+			y += t[i]*pow(x, (n-i));
+		}
+		Point p(x, y);
+		fn.addPoint(p);
 	}
 	return fn;
 }
 
+/*
+// Retorna uma função de grau 1 ou 2
+Funct polinomial_t2(double params[]) {
+	// params[0]: a, params[1]: b, params[2]: c
+	Funct fn;                                  // Função que vai receber os pontos
+	double step = (params[0] == 0) ? 1 : 0.25; // Intervalo de precisão entre os pontos
+	double lim = WIDTH/2;                      // Limites superior e inferior (metade da largura da janela)
+   	double x, y;
+   	for (x = -lim; x < lim; x += step) {
+   		y = params[0]*pow(x, 2) + params[1]*x + params[2];
+		Point p(x, y);
+	   	fn.addPoint(p);
+	}
+	return fn;
+}
+*/
+
 // Retorna uma função do tipo círculo
-Funct circle_t2(double params[]) {
+Funct circle_t2(vector<double> t) { //double params[]) {
 	// params[0]: x_cen, params[1]: y_cen, params[2]: r
 	Funct fn;
-	Point p(params[0], params[1]);
-	p.set_radius(params[2]);
+	Point p(t[0], t[1]);
+	p.set_radius(t[2]);
 	fn.addPoint(p);
 	fn.setType('c');
 	return fn;
@@ -35,6 +55,7 @@ Funct circle_t2(double params[]) {
 /*
  * Métodos de desenho geral
  */
+void tests();
 
 // Desenho da grade
 void show_grid() {
@@ -51,15 +72,35 @@ void show_grid() {
 	setcolor(AXIS_COLOR);
 	line(0, HEIGHT/2, WIDTH, HEIGHT/2);
 	line(WIDTH/2, 0, WIDTH/2, HEIGHT);
+	
+	tests();
 }
 
 // Redesenho de tudo
-void redraw(vector<Funct> &vf) {
+void redraw(vector<Funct> &vf, vector<Point> &ps) {
 	cleardevice();
 	show_grid();
+	setcolor(0);
+	// Pontos
+	for (int i = 0; i < ps.size(); i++) {
+		if (dots) ps[i].draw(POINT_R);
+	}
+	// Funções
 	for (int i = 0; i < vf.size(); i++) {
 		setcolor((i+1) % 14);
 		vf[i].draw_fun();
 	}
+}
+
+void tests() {
+	//system("pause");
+}
+
+// Verifica se um ponto aparece no gráfico
+bool isDisplayed(Point p) {
+	bool x_ok, y_ok;
+	x_ok = ((p.getX() >= -WIDTH/2) && (p.getX() <= WIDTH/2) ? true : false);
+	y_ok = ((p.getY() >= -HEIGHT/2) && (p.getY() <= HEIGHT/2) ? true : false);
+	return (x_ok && y_ok);
 }
 

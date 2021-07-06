@@ -1,4 +1,5 @@
 #include "__point.h"
+
 /*
  * Declaração e definição da classe Função
  */
@@ -26,11 +27,11 @@ class Funct {
 			if (type == 'c') {
 				pts[0].draw(pts[0].getR());
 			} else {
-				for (int i = 0; i < pts.size()-1; i++) {
+				for (int i = 0; i < (int)pts.size()-1; i++) {
 					// Função line refeita de acordo com o sistema de coordenadas
 					line(WIDTH/2+pts[i].getX(), HEIGHT/2-pts[i].getY(), WIDTH/2+pts[i+1].getX(), HEIGHT/2-pts[i+1].getY());
 				   	// Marca os pontos ou não
-				   	if (dots && ((int)pts[i].getX() % scale == 0)) pts[i].draw(pt_r);
+				   	if (dots && ((int)pts[i].getX() % scale == 0)) pts[i].draw(POINT_R);
 				}
 			}
 		}
