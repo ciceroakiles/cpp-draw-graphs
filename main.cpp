@@ -60,28 +60,6 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 			formula = make_formula_vn(args);
 			success = true;
 		} break;
-		/*
-		// Reta
-		case 'a': {
-			abc[0] = 0;
-			std::cout << std::endl << "Parametros da reta:\n>a b\n>";
-			std::cin >> abc[1];
-			std::cin >> abc[2];
-			fx = polinomial_t2(abc);
-			formula = make_formula_v2(abc);
-			success = true;
-		} break;
-		// Parábola
-		case 'b': {
-			std::cout << std::endl << "Parametros da parabola:\n>a b c\n>";
-			std::cin >> abc[0];
-			std::cin >> abc[1];
-			std::cin >> abc[2];
-			fx = polinomial_t2(abc);
-			formula = make_formula_v2(abc);
-			success = true;
-		} break;
-		*/
 		// Círculo
 		case 'c': {
 			std::cout << std::endl << "Parametros do circulo:\n>x_cen y_cen r\n>";

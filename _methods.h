@@ -24,23 +24,6 @@ Funct polinomial_tn(vector<double> t) {
 	return fn;
 }
 
-/*
-// Retorna uma função de grau 1 ou 2
-Funct polinomial_t2(double params[]) {
-	// params[0]: a, params[1]: b, params[2]: c
-	Funct fn;                                  // Função que vai receber os pontos
-	double step = (params[0] == 0) ? 1 : 0.25; // Intervalo de precisão entre os pontos
-	double lim = WIDTH/2;                      // Limites superior e inferior (metade da largura da janela)
-   	double x, y;
-   	for (x = -lim; x < lim; x += step) {
-   		y = params[0]*pow(x, 2) + params[1]*x + params[2];
-		Point p(x, y);
-	   	fn.addPoint(p);
-	}
-	return fn;
-}
-*/
-
 // Retorna uma função do tipo círculo
 Funct circle_t2(vector<double> t) { //double params[]) {
 	// params[0]: x_cen, params[1]: y_cen, params[2]: r
@@ -93,7 +76,7 @@ void redraw(vector<Funct> &vf, vector<Point> &ps) {
 }
 
 void tests() {
-	//system("pause");
+	
 }
 
 // Verifica se um ponto aparece no gráfico

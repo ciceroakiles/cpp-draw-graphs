@@ -68,29 +68,8 @@ string make_formula_vn(vector<double> params) {
 	return formula;
 }
 
-/*
-// Cria a fórmula (reta e parábola)
-string make_formula_v2(double params[]) {
-	string formula = "";
-	int j = (int)sizeof(params);
-	for (int i = 0; i < j-1; i++) {
-		// Não cria termos do tipo 0x^n
-		if (params[i] != 0) {
-			formula += "+";
-			ostringstream ss1, ss2;
-			ss1 << params[i];
-			ss2 << j-2-i;
-			formula += ss1.str() + "x^" + ss2.str();
-		}
-		//cout << ">>>> sizeof(params)-2-i: " << sizeof(params)-2-i << " params[i]: " << params[i] << endl;
-	}
-	formula = ajustes(formula);
-	return formula;
-}
-*/
-
 // Cria a fórmula (círculo)
-string make_formula_c(vector<double> params) { //double params[]) {
+string make_formula_c(vector<double> params) {
 	string formula = "";
 	ostringstream ss;
 	for (int i = 0; i < 2; i++) {

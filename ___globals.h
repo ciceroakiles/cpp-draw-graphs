@@ -18,7 +18,7 @@
 using std::string;
 using std::vector;
 
-int color = 1; 		// Cor atual (0-15)
-int scale = 10;		// Escala
+int color = 1;      // Cor atual (0-15)
+int scale = 10;	    // Escala
 bool dots = false;	// Mostrar pontos
 
