@@ -27,7 +27,15 @@ class Point {
 		    y = y_param;
 		    r = POINT_R;
 		}
-
+		
+		// Verifica se um ponto aparece no gráfico
+		bool isDisplayed() {
+			bool x_ok, y_ok;
+			x_ok = ((getX() >= -WIDTH/2) && (getX() <= WIDTH/2) ? true : false);
+			y_ok = ((getY() >= -HEIGHT/2) && (getY() <= HEIGHT/2) ? true : false);
+			return (x_ok && y_ok);
+		}
+		
 	    // Função circle refeita de acordo com o sistema de coordenadas
 		void draw(double radius) {
 			circle(WIDTH/2+getX(), HEIGHT/2-getY(), radius);

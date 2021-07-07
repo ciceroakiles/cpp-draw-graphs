@@ -50,7 +50,11 @@ string ajustes(string formula) {
 	return formula;
 }
 
-// Cria a fórmula (função de grau n)
+/*
+ * Métodos para criação das fórmulas
+ */
+
+// Função de grau n
 string make_formula_vn(vector<double> params) {
 	string formula = "";
 	for (int i = 0; i < params.size(); i++) {
@@ -68,7 +72,7 @@ string make_formula_vn(vector<double> params) {
 	return formula;
 }
 
-// Cria a fórmula (círculo)
+// Círculo
 string make_formula_c(vector<double> params) {
 	string formula = "";
 	ostringstream ss;
@@ -84,5 +88,18 @@ string make_formula_c(vector<double> params) {
 	formula = replace_occurences(formula, "--", "+");
 	formula = formula.substr(1, formula.size());
 	return formula;
+}
+
+// Funções trigonométricas
+string make_formula_t(int t) {
+	switch (t) {
+		case 1: {
+			return "sen(x)";
+		} break;
+		case 2: {
+			return "cos(x)";
+		} break;
+	}
+	return "";
 }
 

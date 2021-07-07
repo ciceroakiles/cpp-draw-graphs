@@ -9,7 +9,7 @@ class Funct {
 	private:
 		vector<Point> pts; // Pontos
 		string expr;       // Fórmula
-		char type;         // Tipo de função
+		string type;       // Tipo de função
 	
 	public:
 		// Getter e setter da fórmula
@@ -17,14 +17,14 @@ class Funct {
 		void setExpr(string s) { expr = s; }
 		
 		// Altera o tipo da função
-		void setType(char t) { type = t; }
+		void setType(string s) { type = s; }
 		
 		// Adiciona ponto
 		void addPoint(Point p) { pts.push_back(p); }
 		
 		// Desenha a função
 		void draw_fun() {
-			if (type == 'c') {
+			if (type.compare("circle") == 0) {
 				pts[0].draw(pts[0].getR());
 			} else {
 				for (int i = 0; i < (int)pts.size()-1; i++) {

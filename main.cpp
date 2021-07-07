@@ -6,48 +6,34 @@
 #include <iostream>
 #include "_formula.h"
 #include "_methods.h"
+#include "_print.h"
 
-// Método de impressão (opções do menu)
-void print_options() {
-	std::cout << "Dimensoes: " << WIDTH << "x" << HEIGHT << "px" << std::endl;
-	std::cout << "[n] Funcao de grau n" << std::endl;
-	std::cout << "[a] Reta" << std::endl;
-	std::cout << "[b] Parabola" << std::endl;
-	std::cout << "[c] Circulo" << std::endl;
-	std::cout << "[m] Mostrar pontos " << (dots ? "(S)" : "(N)") << std::endl;
-	std::cout << "[p] Marcar um ponto" << std::endl;
-	std::cout << "[x] Excluir pontos" << std::endl;
-	std::cout << "[w] Alterar escala (atual: 1/" << scale << "px)" << std::endl;
-	std::cout << "[y] Funcoes salvas" << std::endl;
-	std::cout << "[z] Limpar grafico e descartar funcoes" << std::endl;
-	std::cout << "[outro] Ver grafico" << std::endl;
-	std::cout << "[CTRL+C] Sair" << std::endl;
-	std::cout << ">";
-}
+Funct submenu_1(vector<Funct> &vf, vector<Point> &ps);
+void submenu_2(vector<Funct> &vf, vector<Point> &ps);
 
 // Loop principal
 void input(vector<Funct> &vf, vector<Point> &ps) {
-	bool no_graph = false, success = false;
+	bool success = false, on_graph = false;
 	char op;
 	double temp;
 	vector<double> args;
 	string formula = "";
 	Funct fx;
 	// Menu
-	print_options();
+	menu_options();
 	std::cin >> op;
 	setcolor(color % 14);
 	// Escolhas
 	switch (op) {
+		// Funções polinomiais de qualquer grau
 		case 'a':
 		case 'b':
-		// Função de qualquer grau
 		case 'n': {
 			int n = -1;
 			if (op == 'a') n = 1;
 			if (op == 'b') n = 2;
 			while (n < 0) {
-				std::cout << std::endl << "Grau da funcao:\n";
+				std::cout << std::endl << "Grau da funcao: ";
 				std::cin >> n;
 			}
 			std::cout << std::endl << "Definicao dos coeficientes\n";
@@ -71,35 +57,15 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 			formula = make_formula_c(args);
 			success = true;
 		} break;
-		// Mostrar pontos
-		case 'm': {
-			char op2;
-			std::cout << std::endl << "S/N:\n>";
-			std::cin >> op2;
-			if (op2 == 's' || op2 == 'S') dots = true;
-			if (op2 == 'n' || op2 == 'N') dots = false;
-			redraw(vf, ps);
-			system("pause");
-			no_graph = true;
+		// Funções trigonométricas
+		case 't': {
+			fx = submenu_1(vf, ps);
+			formula = fx.toString();
+			if (formula.compare("") != 0) success = true;
 		} break;
-		// Marcar um ponto
+		// Pontos
 		case 'p': {
-			std::cout << std::endl << ">x y\n>";
-			for (int i = 0; i < 2; i++) {
-				std::cin >> temp;
-				args.push_back(temp);
-			}
-			Point p(args[0], args[1]);
-			setcolor(0);
-			if (dots) p.draw(POINT_R);
-			setcolor(color);
-			ps.push_back(p);
-		} break;
-		// Excluir pontos
-		case 'x': {
-			ps.clear();
-			redraw(vf, ps);
-			no_graph = true;
+			submenu_2(vf, ps);
 		} break;
 		// Alterar escala
 		case 'w': {
@@ -113,9 +79,7 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 					std::cout << "[!] Escala com problemas nos eixos.\n>";
 				}
 			} while (!width_ok || !height_ok);
-			//system("pause");
 			redraw(vf, ps);
-    		no_graph = true;
 		} break;
 		// Funções salvas
 		case 'y': {
@@ -123,18 +87,27 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 			for (int i = 0; i < vf.size(); i++) {
 				std::cout << i+1 << ") " << vf[i].toString() << std::endl;
 			}
-			system("pause");
-			no_graph = true;
 		} break;
 		// Limpar gráfico e descartar funções
 		case 'z': {
-			cleardevice();
-			show_grid();
-			vf.clear();
-			color = 1;
-			no_graph = true;
+			char op2;
+			std::cout << std::endl << "Tem certeza? (S)\n>";
+			std::cin >> op2;
+			if (op2 == 's' || op2 == 'S') {
+				cleardevice();
+				show_grid();
+				vf.clear();
+				color = 1;
+			}
 		} break;
 		default: {
+			on_graph = true;
+			// Pausa para resultado do gráfico
+			SetForegroundWindow(FindWindow(NULL, TITLE));
+			std::cout << std::endl << "Pressione qualquer tecla no grafico para continuar..." << std::endl;
+			getch();
+			// Volta ao console
+			SetForegroundWindow(GetConsoleWindow());
 		} break;
 	}
 	if (success) {
@@ -146,30 +119,84 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 		std::cout << "[!] Funcao salva.\n";
 		color++;
 	}
-	if (!no_graph) {
-		// Pausa para resultado do gráfico
-		SetForegroundWindow(FindWindow(NULL, TITLE));
-		std::cout << std::endl << "Pressione qualquer tecla no grafico para continuar..." << std::endl;
-		getch();
-		// Volta ao console
-		SetForegroundWindow(GetConsoleWindow());	
-	}
+	std::cout << std::endl;
+	if (!on_graph) system("pause");
+	on_graph = false;
 	success = false;
-	no_graph = false;
 	std::cin.clear();
 	std::cin.ignore(10000,'\n');
 	system("cls");
+}
+
+// Submenu - Funções trigonométricas
+Funct submenu_1(vector<Funct> &vf, vector<Point> &ps) {
+	int op;
+	Funct fx;
+	submenu1_options();
+	std::cin >> op;
+	// Seleção
+	fx = trigonometric(op);
+	fx.setExpr(make_formula_t(op));
+	return fx;
+}
+
+// Submenu - Pontos
+void submenu_2(vector<Funct> &vf, vector<Point> &ps) {
+	char op;
+	submenu2_options();
+	std::cin >> op;
+	switch (op) {
+		// Mostrar pontos
+		case 'm': {
+			char op2;
+			std::cout << std::endl << "S/N:\n>";
+			std::cin >> op2;
+			if (op2 == 's' || op2 == 'S') dots = true;
+			if (op2 == 'n' || op2 == 'N') dots = false;
+			redraw(vf, ps);
+		} break;
+		// Marcar um ponto
+		case 'v': {
+			double t1, t2;
+			std::cout << std::endl << ">x y\n>";
+			std::cin >> t1;
+			std::cin >> t2;
+			Point p(t1, t2);
+			setcolor(0);
+			if (dots) p.draw(POINT_R);
+			setcolor(color);
+			ps.push_back(p);
+		} break;
+		// Excluir pontos
+		case 'x': {
+			ps.clear();
+			redraw(vf, ps);
+		} break;
+		default: {
+		} break;
+	}
 }
 
 int main() {
 	// Funções salvas e pontos marcados
 	vector<Funct> funcoes;
 	vector<Point> pontos;
-	// Inicia segunda janela, muda títulos e desenha grid
+	// Janelas (console e gráficos)
+	HWND window1, window2;
+	// Inicia segunda janela e muda títulos
 	initwindow(WIDTH+11, HEIGHT+15, "");
 	system("title draw-graphs");
-	HWND hWnd = FindWindow(NULL, "Windows BGI");
-  	SetWindowTextA(hWnd, TITLE);
+	window2 = FindWindow(NULL, "Windows BGI");
+	SetWindowTextA(window2, TITLE);
+	// Impede maximização da janela de gráficos
+	DWORD style = GetWindowLong(window2, GWL_STYLE);
+	style &= ~WS_MAXIMIZEBOX;
+	SetWindowLong(window2, GWL_STYLE, style);
+	SetWindowPos(window2, NULL, 0, 0, 0, 0, SWP_NOSIZE|SWP_NOMOVE|SWP_FRAMECHANGED);
+	// Altera posição e dimensões do console
+	window1 = GetConsoleWindow();
+	MoveWindow(window1, WIDTH+4, 0, 500, HEIGHT+42, TRUE);
+  	// Desenha grid
 	show_grid();
 	// Volta ao console
 	SetForegroundWindow(GetConsoleWindow());

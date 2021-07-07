@@ -8,11 +8,11 @@
 // Retorna uma função de grau n
 Funct polinomial_tn(vector<double> t) {
 	Funct fn;                          // Função que vai receber os pontos
-	int n = t.size()-1;                // Grau máximo
-	double step = (n == 1) ? 1 : 0.25; // Intervalo de precisão entre os pontos
+	int n = t.size()-1;                // Grau da função
+	double step = (n < 2) ? 1 : 0.25;  // Intervalo de precisão entre os pontos
 	double lim = WIDTH/2;              // Limites superior e inferior (metade da largura da janela)
    	double x, y;
-	for (x = -lim; x < lim; x += step) {
+	for (x = -lim; x <= lim; x += step) {
    		y = 0;
    		// Soma dos termos t(i)x^(n-i)
 		for (int i = 0; i <= n; i++) {
@@ -30,13 +30,42 @@ Funct circle_t2(vector<double> t) {
 	Point p(t[0], t[1]);
 	p.set_radius(t[2]);
 	fn.addPoint(p);
-	fn.setType('c');
+	fn.setType("circle");
 	return fn;
 }
 
+// Retorna uma função trigonométrica
+double tr_select(double x, int t);
+Funct trigonometric(int t) {
+	Funct fn;             // Função que vai receber os pontos
+	double step = 0.25;   // Intervalo de precisão entre os pontos
+	double lim = WIDTH/2; // Limites superior e inferior (metade da largura da janela)
+   	double x, y;
+	for (x = -lim; x < lim; x += step) {
+   		y = tr_select(x, t);
+		Point p(x, y);
+		fn.addPoint(p);
+	}
+	return fn;
+}
+
+// Procedimento auxiliar
+double tr_select(double x, int t) {
+	switch (t) {
+		case 1: {
+			return sin(x);
+		} break;
+		case 2: {
+			return cos(x);
+		} break;
+	}
+	return 0;
+}
+
 /*
- * Métodos de desenho geral, verificação e teste
+ * Métodos de desenho geral e teste
  */
+
 void tests();
 
 // Desenho da grade
@@ -72,14 +101,6 @@ void redraw(vector<Funct> &vf, vector<Point> &ps) {
 		setcolor((i+1) % 14);
 		vf[i].draw_fun();
 	}
-}
-
-// Verifica se um ponto aparece no gráfico
-bool isDisplayed(Point p) {
-	bool x_ok, y_ok;
-	x_ok = ((p.getX() >= -WIDTH/2) && (p.getX() <= WIDTH/2) ? true : false);
-	y_ok = ((p.getY() >= -HEIGHT/2) && (p.getY() <= HEIGHT/2) ? true : false);
-	return (x_ok && y_ok);
 }
 
 void tests() {
