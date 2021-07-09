@@ -1,5 +1,5 @@
 #include <math.h>
-#include "__funct.h"
+#include "__class_funct.h"
 
 /*
  * Métodos que retornam objetos do tipo Função
@@ -49,7 +49,7 @@ Funct trigonometric(int t) {
 	return fn;
 }
 
-// Procedimento auxiliar
+// Procedimento auxiliar (escolha de função)
 double tr_select(double x, int t) {
 	switch (t) {
 		case 1: {

@@ -1,4 +1,4 @@
-#include "__point.h"
+#include "__class_point.h"
 
 /*
  * Declaração e definição da classe Função
