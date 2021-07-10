@@ -1,8 +1,8 @@
-#include "__class_point.h"
-
 /*
  * Declaração e definição da classe Função
  */
+
+#include "point.h"
 
 // Representação de uma função
 class Funct {
@@ -31,7 +31,7 @@ class Funct {
 					// Função line refeita de acordo com o sistema de coordenadas
 					line(WIDTH/2+pts[i].getX(), HEIGHT/2-pts[i].getY(), WIDTH/2+pts[i+1].getX(), HEIGHT/2-pts[i+1].getY());
 				   	// Marca os pontos ou não
-				   	if (dots && ((int)pts[i].getX() % scale == 0)) pts[i].draw(POINT_R);
+				   	if (g.getDots() && ((int)pts[i].getX() % g.getScale() == 0)) pts[i].draw(POINT_R);
 				}
 			}
 		}

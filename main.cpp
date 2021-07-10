@@ -28,6 +28,7 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 		// Mudar escala
 		case 'e': {
 			bool width_ok = false, height_ok = false;
+			int scale;
 			do {
 				std::cout << std::endl << "Nova escala:\n>";
 				std::cin >> scale;
@@ -37,6 +38,7 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 					std::cout << "[!] Escala com problemas nos eixos.\n";
 				}
 			} while (!width_ok || !height_ok);
+			g.setScale(scale);
 			redraw(vf, ps);
 		} break;
 		default: {

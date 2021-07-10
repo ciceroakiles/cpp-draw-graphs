@@ -1,8 +1,8 @@
-#include "___globals.h"
-
 /*
  * Declaração e definição da classe Ponto
  */
+
+#include "_globals.h"
 
 // Representação de um ponto
 class Point {
@@ -12,11 +12,11 @@ class Point {
 	
 	public:
 	    // Getters (coordenadas)
-		double getX() { return x*scale; }
-		double getY() { return y*scale; }
+		double getX() { return x*g.getScale(); }
+		double getY() { return y*g.getScale(); }
 	    
 	    // Suporte ao círculo
-		double getR() { return r*scale; }
+		double getR() { return r*g.getScale(); }
 		void set_radius(double r_param) {
 			r = r_param;
 		}

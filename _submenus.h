@@ -1,10 +1,8 @@
-#include "__formula.h"
-#include "__methods.h"
-#include "__print.h"
-
 /*
  * Submenus
  */
+
+#include "utils/_draw.h"
 
 // Procedimento auxiliar (limpeza de input)
 void clear_input() {
@@ -28,12 +26,12 @@ Funct subm_trg(vector<Funct> &vf, vector<Point> &ps) {
 void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 	char op;
 	do {
+		setcolor(g.getColor() % 14);
+		system("cls");
 		double temp;
 		vector<double> args;
 		Funct fx;
 		fx.setExpr("");
-		setcolor(color % 14);
-		system("cls");
 		subm_fun_opt();
 		std::cin >> op;
 		switch (op) {
@@ -86,12 +84,12 @@ void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 			case 'z': {
 				char op2;
 				std::cout << "\n[!] As funcoes serao removidas do grafico.";
-				std::cout << "\n[!] Tem certeza? (S)\n>";
+				std::cout << "\nTem certeza? (S)\n>";
 				std::cin >> op2;
 				if (op2 == 's' || op2 == 'S') {
 					vf.clear();
 					redraw(vf, ps);
-					color = 1;
+					g.setColor(1);
 				}
 			} break;
 			default: {
@@ -103,8 +101,8 @@ void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 			std::cout << std::endl << "[!] No grafico: " << fx.toString() << std::endl;
 			vf.push_back(fx);
 			std::cout << "[!] Funcao salva.\n" << std::endl;
-			color++;
 			system("pause");
+			g.setColor(g.getColor()+1);
 		}
 	} while (op != '<');
 }
@@ -122,8 +120,8 @@ void subm_pts(vector<Funct> &vf, vector<Point> &ps) {
 				char op2;
 				std::cout << std::endl << "S/N:\n>";
 				std::cin >> op2;
-				if (op2 == 's' || op2 == 'S') dots = true;
-				if (op2 == 'n' || op2 == 'N') dots = false;
+				if (op2 == 's' || op2 == 'S') g.setDots();
+				if (op2 == 'n' || op2 == 'N') g.setDots();
 				redraw(vf, ps);
 			} break;
 			// Marcar um ponto
@@ -134,8 +132,8 @@ void subm_pts(vector<Funct> &vf, vector<Point> &ps) {
 				std::cin >> t2;
 				Point p(t1, t2);
 				setcolor(0);
-				if (dots) p.draw(POINT_R);
-				setcolor(color);
+				if (g.getDots()) p.draw(POINT_R);
+				setcolor(g.getColor());
 				ps.push_back(p);
 			} break;
 			// Excluir pontos

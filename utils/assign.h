@@ -1,9 +1,9 @@
-#include <math.h>
-#include "__class_funct.h"
-
 /*
- * Métodos que retornam objetos do tipo Função
+ * Atribuição dos pontos às funções
  */
+
+#include <math.h>
+#include "../classes/funct.h"
 
 // Retorna uma função de grau n
 Funct polinomial_tn(vector<double> t) {
@@ -60,50 +60,5 @@ double tr_select(double x, int t) {
 		} break;
 	}
 	return 0;
-}
-
-/*
- * Métodos de desenho geral e teste
- */
-
-void tests();
-
-// Desenho da grade
-void show_grid() {
-	setcolor(GRID_COLOR);
-	floodfill(0, 0, GRID_COLOR);
-	// Linhas
-	for (int i = 0; i <= WIDTH; i += scale) {
-		line(i, 0, i, HEIGHT);
-	}
-	for (int i = 0; i <= HEIGHT; i += scale) {
-		line(0, i, WIDTH, i);
-	}
-	// Eixos X e Y
-	setcolor(AXIS_COLOR);
-	line(0, HEIGHT/2, WIDTH, HEIGHT/2);
-	line(WIDTH/2, 0, WIDTH/2, HEIGHT);
-	
-	tests();
-}
-
-// Redesenho de tudo
-void redraw(vector<Funct> &vf, vector<Point> &ps) {
-	cleardevice();
-	show_grid();
-	setcolor(0);
-	// Pontos
-	for (int i = 0; i < ps.size(); i++) {
-		if (dots) ps[i].draw(POINT_R);
-	}
-	// Funções
-	for (int i = 0; i < vf.size(); i++) {
-		setcolor((i+1) % 14);
-		vf[i].draw_fun();
-	}
-}
-
-void tests() {
-	
 }
 
