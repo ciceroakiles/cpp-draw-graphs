@@ -1,13 +1,71 @@
 /*
- * Submenus
+ * Menus
  */
 
-#include "utils/_draw.h"
+#include "utils/assign.h"
+#include "utils/formula.h"
+#include "utils/print.h"
+
+// Assinaturas de métodos
+void subm_fun(vector<Funct> &vf, vector<Point> &ps);
+void subm_pts(vector<Funct> &vf, vector<Point> &ps);
+void redraw(vector<Funct> &vf, vector<Point> &ps);
 
 // Procedimento auxiliar (limpeza de input)
 void clear_input() {
 	std::cin.clear();
 	std::cin.ignore(10000,'\n');
+}
+
+// Loop principal
+void input(vector<Funct> &vf, vector<Point> &ps) {
+	bool dont_pause = false;
+	char op;
+	menu_options();
+	std::cin >> op;
+	// Escolhas
+	switch (op) {
+		// Funções
+		case 'f': {
+			subm_fun(vf, ps);
+			dont_pause = true;
+		} break;
+		// Pontos
+		case 'p': {
+			subm_pts(vf, ps);
+			dont_pause = true;
+		} break;
+		// Mudar escala
+		case 'e': {
+			bool width_ok = false, height_ok = false;
+			int scale;
+			do {
+				std::cout << std::endl << "Nova escala:\n>";
+				std::cin >> scale;
+				width_ok = ((WIDTH % scale == 0) && ((WIDTH/scale) % 2 == 0));
+				height_ok = ((HEIGHT % scale == 0) && ((HEIGHT/scale) % 2 == 0));
+				if (!width_ok || !height_ok) {
+					std::cout << "[!] Escala com problemas nos eixos.\n";
+				}
+			} while (!width_ok || !height_ok);
+			graph.setScale(scale);
+			redraw(vf, ps);
+		} break;
+		default: {
+			dont_pause = true;
+			// Pausa para resultado do gráfico
+			SetForegroundWindow(FindWindow(NULL, TITLE));
+			std::cout << std::endl << "Pressione qualquer tecla no grafico para continuar..." << std::endl;
+			getch();
+			// Volta ao console
+			SetForegroundWindow(GetConsoleWindow());
+		} break;
+	}
+	std::cout << std::endl;
+	if (!dont_pause) system("pause");
+	dont_pause = false;
+	clear_input();
+	system("cls");
 }
 
 // Principal > Funções > Funções trigonométricas
@@ -26,7 +84,6 @@ Funct subm_trg(vector<Funct> &vf, vector<Point> &ps) {
 void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 	char op;
 	do {
-		setcolor(g.getColor() % 14);
 		system("cls");
 		double temp;
 		vector<double> args;
@@ -89,7 +146,7 @@ void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 				if (op2 == 's' || op2 == 'S') {
 					vf.clear();
 					redraw(vf, ps);
-					g.setColor(1);
+					graph.setColor(1);
 				}
 			} break;
 			default: {
@@ -97,12 +154,13 @@ void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 		}
 		if (op != '<' && fx.toString().compare("") != 0) {
 			// Sucesso
+			fx.setColor(graph.getColor());
 			fx.draw_fun();
 			std::cout << std::endl << "[!] No grafico: " << fx.toString() << std::endl;
 			vf.push_back(fx);
 			std::cout << "[!] Funcao salva.\n" << std::endl;
+			graph.colorRotate();
 			system("pause");
-			g.setColor(g.getColor()+1);
 		}
 	} while (op != '<');
 }
@@ -120,8 +178,8 @@ void subm_pts(vector<Funct> &vf, vector<Point> &ps) {
 				char op2;
 				std::cout << std::endl << "S/N:\n>";
 				std::cin >> op2;
-				if (op2 == 's' || op2 == 'S') g.setDots();
-				if (op2 == 'n' || op2 == 'N') g.setDots();
+				if (op2 == 's' || op2 == 'S') graph.setDots();
+				if (op2 == 'n' || op2 == 'N') graph.setDots();
 				redraw(vf, ps);
 			} break;
 			// Marcar um ponto
@@ -132,8 +190,8 @@ void subm_pts(vector<Funct> &vf, vector<Point> &ps) {
 				std::cin >> t2;
 				Point p(t1, t2);
 				setcolor(0);
-				if (g.getDots()) p.draw(POINT_R);
-				setcolor(g.getColor());
+				if (graph.getDots()) p.draw(POINT_R);
+				setcolor(graph.getColor());
 				ps.push_back(p);
 			} break;
 			// Excluir pontos
@@ -150,5 +208,20 @@ void subm_pts(vector<Funct> &vf, vector<Point> &ps) {
 			} break;
 		}
 	} while (op != '<');
+}
+
+// Redesenho de tudo
+void redraw(vector<Funct> &vf, vector<Point> &ps) {
+	cleardevice();
+	graph.show_grid();
+	setcolor(0);
+	// Pontos
+	for (int i = 0; i < ps.size(); i++) {
+		if (graph.getDots()) ps[i].draw(POINT_R);
+	}
+	// Funções
+	for (int i = 0; i < vf.size(); i++) {
+		vf[i].draw_fun();
+	}
 }
 

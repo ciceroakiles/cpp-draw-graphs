@@ -2,7 +2,7 @@
  * Declaração e definição da classe Ponto
  */
 
-#include "_globals.h"
+#include "_global.h"
 
 // Representação de um ponto
 class Point {
@@ -11,23 +11,23 @@ class Point {
 		double r;	 // Suporte ao círculo
 	
 	public:
-	    // Getters (coordenadas)
-		double getX() { return x*g.getScale(); }
-		double getY() { return y*g.getScale(); }
-	    
-	    // Suporte ao círculo
-		double getR() { return r*g.getScale(); }
-		void set_radius(double r_param) {
-			r = r_param;
-		}
-	    
-	    // Construtor
+		// Construtor
 		Point(double x_param, double y_param) {
 		    x = x_param;
 		    y = y_param;
 		    r = POINT_R;
 		}
 		
+	    // Getters (coordenadas)
+		double getX() { return x*graph.getScale(); }
+		double getY() { return y*graph.getScale(); }
+	    
+	    // Suporte ao círculo
+		double getR() { return r*graph.getScale(); }
+		void set_radius(double r_param) {
+			r = r_param;
+		}
+	    
 		// Verifica se um ponto aparece no gráfico
 		bool isDisplayed() {
 			bool x_ok, y_ok;
@@ -36,9 +36,9 @@ class Point {
 			return (x_ok && y_ok);
 		}
 		
-	    // Função circle refeita de acordo com o sistema de coordenadas
+	    // Chama método externo (circle)
 		void draw(double radius) {
-			circle(WIDTH/2+getX(), HEIGHT/2-getY(), radius);
+			graph.g_circle(getX(), getY(), radius);
 		}
 };
 

@@ -7,6 +7,7 @@
 // Representação de uma função
 class Funct {
 	private:
+		int color;         // Cor
 		vector<Point> pts; // Pontos
 		string expr;       // Fórmula
 		string type;       // Tipo de função
@@ -22,18 +23,21 @@ class Funct {
 		// Adiciona ponto
 		void addPoint(Point p) { pts.push_back(p); }
 		
+		// Muda cor
+		void setColor(int c) { color = c; }
+		
 		// Desenha a função
 		void draw_fun() {
+			setcolor(color);
 			if (type.compare("circle") == 0) {
 				pts[0].draw(pts[0].getR());
 			} else {
 				for (int i = 0; i < (int)pts.size()-1; i++) {
-					// Função line refeita de acordo com o sistema de coordenadas
-					line(WIDTH/2+pts[i].getX(), HEIGHT/2-pts[i].getY(), WIDTH/2+pts[i+1].getX(), HEIGHT/2-pts[i+1].getY());
-				   	// Marca os pontos ou não
-				   	if (g.getDots() && ((int)pts[i].getX() % g.getScale() == 0)) pts[i].draw(POINT_R);
+					// Chama método externo (line)
+					graph.g_line(pts[i].getX(), pts[i].getY(), pts[i+1].getX(), pts[i+1].getY());
 				}
 			}
+			setcolor(graph.getColor());
 		}
 };
 
