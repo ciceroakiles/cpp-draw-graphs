@@ -9,7 +9,9 @@
 int main() {
 	// Funções salvas e pontos marcados
 	vector<Funct> funcoes;
-	vector<Point> pontos;
+	Funct ps;
+	ps.setColor(0);
+	funcoes.push_back(ps);
 	// Janelas (console e gráficos)
 	HWND window1, window2;
 	// Inicia segunda janela e muda títulos
@@ -18,10 +20,12 @@ int main() {
 	window2 = FindWindow(NULL, "Windows BGI");
 	SetWindowTextA(window2, TITLE);
 	// Impede maximização da janela de gráficos
-	DWORD style = GetWindowLong(window2, GWL_STYLE);
-	style &= ~WS_MAXIMIZEBOX;
-	SetWindowLong(window2, GWL_STYLE, style);
-	SetWindowPos(window2, NULL, 0, 0, 0, 0, SWP_NOSIZE|SWP_NOMOVE|SWP_FRAMECHANGED);
+	if (!MX_ABLE) {
+		DWORD style = GetWindowLong(window2, GWL_STYLE);
+		style &= ~WS_MAXIMIZEBOX;
+		SetWindowLong(window2, GWL_STYLE, style);
+		SetWindowPos(window2, NULL, 0, 0, 0, 0, SWP_NOSIZE|SWP_NOMOVE|SWP_FRAMECHANGED);
+	}
 	// Altera posição e dimensões do console
 	window1 = GetConsoleWindow();
 	MoveWindow(window1, WIDTH+4, 0, 500, HEIGHT+42, TRUE);
@@ -30,7 +34,7 @@ int main() {
 	// Volta ao console
 	SetForegroundWindow(GetConsoleWindow());
 	do {
-		input(funcoes, pontos);
+		input(funcoes); //, pontos);
 	} while (true);
     return 0;
 }

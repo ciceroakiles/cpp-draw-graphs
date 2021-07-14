@@ -4,9 +4,12 @@
 
 #include <graphics.h>
 #include <vector>
-#define TITLE "Gráfico da função" // Título da janela
-#define WIDTH 800                 // Largura da janela
-#define HEIGHT 600                // Altura da janela
+// Janela
+#define TITLE "Gráfico da função" // Título
+#define MX_ABLE false             // Pode maximizar
+#define WIDTH 800                 // Largura
+#define HEIGHT 600                // Altura
+// Gráfico
 #define POINT_R 3                 // Raio do ponto em px
 #define GRID_COLOR 7              // Cor da grade
 #define AXIS_COLOR 0              // Cor dos eixos
@@ -37,6 +40,21 @@ class Global {
 		void setScale(int s) { scale = s; }
 		void setDots() { dots = !dots; }
 		
+		// Muda para a cor preta, atual, ou da função
+		void blackColor() { setcolor(0); }
+		void currentColor() { setcolor(getColor()); }
+		void functColor(int c) { setcolor(c); }
+		
+		// Mudança de cores
+		void colorRotate() {
+			setColor((getColor()+1) % 14);
+			// Cores para ignorar
+			if (getColor() == GRID_COLOR || getColor() == AXIS_COLOR || getColor() == 11) {
+				setColor((getColor()+1) % 14);
+			}
+			currentColor();
+		}
+		
 		// Desenho da grade
 		void show_grid() {
 			setcolor(GRID_COLOR);
@@ -52,7 +70,7 @@ class Global {
 			setcolor(AXIS_COLOR);
 			line(0, HEIGHT/2, WIDTH, HEIGHT/2);
 			line(WIDTH/2, 0, WIDTH/2, HEIGHT);
-			setcolor(getColor());
+			currentColor();
 		}
 		
 		// Método circle refeito de acordo com o sistema de coordenadas
@@ -64,18 +82,8 @@ class Global {
 		void g_line(double x1, double y1, double x2, double y2) {
 			line(WIDTH/2 + x1, HEIGHT/2 - y1, WIDTH/2 + x2, HEIGHT/2 - y2);
 		}
-		
-		// Mudança de cores
-		void colorRotate() {
-			setColor((getColor()+1) % 14);
-			// Cores para ignorar
-			if (getColor() == GRID_COLOR || getColor() == AXIS_COLOR || getColor() == 11) {
-				setColor((getColor()+1) % 14);
-			}
-			setcolor(getColor());
-		}
 };
 
 // Instância padrão
-Global graph(1, 10, false);
+Global graph(1, 10, true);
 

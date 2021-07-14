@@ -7,9 +7,9 @@
 #include "utils/print.h"
 
 // Assinaturas de métodos
-void subm_fun(vector<Funct> &vf, vector<Point> &ps);
-void subm_pts(vector<Funct> &vf, vector<Point> &ps);
-void redraw(vector<Funct> &vf, vector<Point> &ps);
+void subm_fun(vector<Funct> &vf);
+void subm_pts(vector<Funct> &vf);
+void redraw(vector<Funct> &vf);
 
 // Procedimento auxiliar (limpeza de input)
 void clear_input() {
@@ -18,7 +18,7 @@ void clear_input() {
 }
 
 // Loop principal
-void input(vector<Funct> &vf, vector<Point> &ps) {
+void input(vector<Funct> &vf) {
 	bool dont_pause = false;
 	char op;
 	menu_options();
@@ -27,12 +27,12 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 	switch (op) {
 		// Funções
 		case 'f': {
-			subm_fun(vf, ps);
+			subm_fun(vf);
 			dont_pause = true;
 		} break;
 		// Pontos
 		case 'p': {
-			subm_pts(vf, ps);
+			subm_pts(vf);
 			dont_pause = true;
 		} break;
 		// Mudar escala
@@ -49,7 +49,7 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 				}
 			} while (!width_ok || !height_ok);
 			graph.setScale(scale);
-			redraw(vf, ps);
+			redraw(vf);
 		} break;
 		default: {
 			dont_pause = true;
@@ -69,7 +69,7 @@ void input(vector<Funct> &vf, vector<Point> &ps) {
 }
 
 // Principal > Funções > Funções trigonométricas
-Funct subm_trg(vector<Funct> &vf, vector<Point> &ps) {
+Funct subm_trg() {
 	int op;
 	Funct fx;
 	subm_fun_tr_opt();
@@ -81,7 +81,7 @@ Funct subm_trg(vector<Funct> &vf, vector<Point> &ps) {
 }
 
 // Principal > Funções
-void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
+void subm_fun(vector<Funct> &vf) {
 	char op;
 	do {
 		system("cls");
@@ -124,15 +124,15 @@ void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 			} break;
 			// Funções trigonométricas
 			case 't': {
-				fx = subm_trg(vf, ps);
+				fx = subm_trg();
 				// Correção de possível erro, caso não haja função definida
 				if (fx.toString().compare("") == 0) clear_input();
 			} break;
 			// Funções salvas
 			case 'y': {
 				std::cout << std::endl << "Funcoes salvas:\n";
-				for (int i = 0; i < vf.size(); i++) {
-					std::cout << i+1 << ") " << vf[i].toString() << std::endl;
+				for (int i = 1; i < vf.size(); i++) {
+					std::cout << i << ") " << vf[i].toString() << std::endl;
 				}
 				std::cout << std::endl;
 				system("pause");
@@ -144,8 +144,10 @@ void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 				std::cout << "\nTem certeza? (S)\n>";
 				std::cin >> op2;
 				if (op2 == 's' || op2 == 'S') {
+					Funct temp = vf[0];
 					vf.clear();
-					redraw(vf, ps);
+					vf.push_back(temp);
+					redraw(vf);
 					graph.setColor(1);
 				}
 			} break;
@@ -166,10 +168,12 @@ void subm_fun(vector<Funct> &vf, vector<Point> &ps) {
 }
 
 // Principal > Pontos
-void subm_pts(vector<Funct> &vf, vector<Point> &ps) {
+void subm_pts(vector<Funct> &vf) {
 	char op;
 	do {
 		system("cls");
+		// Na função zero: todos os pontos do submenu
+		vector<Point> points = vf[0].getPoints();
 		subm_pts_opt();
 		std::cin >> op;
 		switch (op) {
@@ -180,44 +184,78 @@ void subm_pts(vector<Funct> &vf, vector<Point> &ps) {
 				std::cin >> op2;
 				if (op2 == 's' || op2 == 'S') graph.setDots();
 				if (op2 == 'n' || op2 == 'N') graph.setDots();
-				redraw(vf, ps);
+				redraw(vf);
 			} break;
 			// Marcar um ponto
 			case '2': {
-				double t1, t2;
+				double x, y;
 				std::cout << std::endl << ">x y\n>";
-				std::cin >> t1;
-				std::cin >> t2;
-				Point p(t1, t2);
-				setcolor(0);
-				if (graph.getDots()) p.draw(POINT_R);
-				setcolor(graph.getColor());
-				ps.push_back(p);
+				std::cin >> x;
+				std::cin >> y;
+				// Desenha e salva o ponto, se puder
+				Point p(x, y);
+				if (p.isDisplayed()) {
+					graph.blackColor();
+					if (graph.getDots()) p.draw(POINT_R);
+					graph.currentColor();
+					vf[0].addPoint(p);
+				} else {
+					std::cout << "\n[!] O ponto nao pode ser exibido.";
+					std::cout << "\n[!] O ponto nao foi salvo.\n" << std::endl;
+					system("pause");
+				}
 			} break;
-			// Excluir pontos
+			// Ligar dois pontos
 			case '3': {
+				double pA, pB;
+				std::cout << std::endl << ">pA pB\n>";
+				std::cin >> pA;
+				std::cin >> pB;
+				// Desenha segmento
+				graph.blackColor();
+				vf[0].singleLink(pA-1, pB-1);
+				vf[0].draw_fun();
+				graph.currentColor();
+				system("pause");
+			} break;
+			// Pontos salvos
+			case '4': {
+				std::cout << std::endl << "Pontos salvos:\n";
+				for (int i = 0; i < points.size(); i++) {
+					double x = points[i].getX()/graph.getScale();
+					double y = points[i].getY()/graph.getScale();
+					std::cout << i+1 << ") (" << x << ", " << y << ")" << std::endl;
+				}
+				std::cout << std::endl;
+				system("pause");
+			} break;
+			// Excluir pontos / Excluir segmentos
+			case '5':
+			case '6': {
 				char op2;
 				std::cout << std::endl << "Tem certeza? (S)\n>";
 				std::cin >> op2;
 				if (op2 == 's' || op2 == 'S') {
-					ps.clear();
-					redraw(vf, ps);
+					Funct ps;
+					ps.setColor(0);
+					if (op == '6') ps.setPoints(points);
+					vf[0] = ps;
+					redraw(vf);
 				}
-			} break;
-			default: {
 			} break;
 		}
 	} while (op != '<');
 }
 
 // Redesenho de tudo
-void redraw(vector<Funct> &vf, vector<Point> &ps) {
+void redraw(vector<Funct> &vf) {
 	cleardevice();
 	graph.show_grid();
-	setcolor(0);
-	// Pontos
-	for (int i = 0; i < ps.size(); i++) {
-		if (graph.getDots()) ps[i].draw(POINT_R);
+	graph.blackColor();
+	// Pontos e segmentos (função index zero)
+	vector<Point> points = vf[0].getPoints();
+	for (int i = 0; i < points.size(); i++) {
+		if (graph.getDots()) points[i].draw(POINT_R);
 	}
 	// Funções
 	for (int i = 0; i < vf.size(); i++) {

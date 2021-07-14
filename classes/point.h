@@ -36,7 +36,7 @@ class Point {
 			return (x_ok && y_ok);
 		}
 		
-	    // Chama método externo (circle)
+	    // Método externo (circle)
 		void draw(double radius) {
 			graph.g_circle(getX(), getY(), radius);
 		}

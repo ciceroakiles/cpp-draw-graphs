@@ -2,8 +2,8 @@
  * Métodos para elaboração das fórmulas
  */
 
-#include <sstream>
 #include <math.h>
+#include <sstream>
 #include <vector>
 using std::ostringstream;
 using std::string;
@@ -98,6 +98,18 @@ string make_formula_t(int t) {
 		} break;
 		case 2: {
 			return "cos(x)";
+		} break;
+		case 3: {
+			return "tan(x)";
+		} break;
+		case 4: {
+			return "csc(x)";
+		} break;
+		case 5: {
+			return "sec(x)";
+		} break;
+		case 6: {
+			return "cot(x)";
 		} break;
 	}
 	return "";

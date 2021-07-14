@@ -7,13 +7,18 @@
 // Representação de uma função
 class Funct {
 	private:
-		int color;         // Cor
-		vector<Point> pts; // Pontos
-		string expr;       // Fórmula
-		string type;       // Tipo de função
+		int color;                // Cor
+		vector<Point> pts;        // Todos os pontos
+		vector<vector<int> > lnk; // Pontos ligados
+		string expr;              // Fórmula
+		string type;              // Tipo de função
 	
 	public:
-		// Getter e setter da fórmula
+		// Getter e setter (vetor de pontos)
+		vector<Point> getPoints() { return pts; }
+		void setPoints(vector<Point> p) { pts = p; }
+		
+		// Getter e setter (fórmula)
 		string toString() { return expr; }
 		void setExpr(string s) { expr = s; }
 		
@@ -26,18 +31,40 @@ class Funct {
 		// Muda cor
 		void setColor(int c) { color = c; }
 		
-		// Desenha a função
+		// Une dois pontos pelo index
+		void singleLink(int a, int b) {
+			vector<int> pair;
+			pair.push_back(a);
+			pair.push_back(b);
+			lnk.push_back(pair);
+		}
+		
+		// Cria todos os segmentos observáveis
+		void linkAll() {
+			for (int i = 0; i < pts.size()-1; i++) {
+				// Liga apenas se um dos dois pontos pode ser mostrado
+				if (!pts[i].isDisplayed() && !pts[i+1].isDisplayed()) {	
+				} else {
+					singleLink(i, i+1);
+				}
+			}
+		}
+		
+		// Desenho de uma função por segmentos
 		void draw_fun() {
-			setcolor(color);
+			graph.functColor(color);
 			if (type.compare("circle") == 0) {
 				pts[0].draw(pts[0].getR());
 			} else {
-				for (int i = 0; i < (int)pts.size()-1; i++) {
-					// Chama método externo (line)
-					graph.g_line(pts[i].getX(), pts[i].getY(), pts[i+1].getX(), pts[i+1].getY());
-				}
+				for (int i = 0; i < lnk.size(); i++) {
+					// Recupera pontos para desenhar
+					Point p1 = pts[lnk[i][0]];
+					Point p2 = pts[lnk[i][1]];
+					// Método externo (line)
+					graph.g_line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+				}	
 			}
-			setcolor(graph.getColor());
+			graph.currentColor();
 		}
 };
 
