@@ -42,8 +42,7 @@ class Funct {
 		// Cria todos os segmentos observáveis
 		void linkAll() {
 			for (int i = 0; i < pts.size()-1; i++) {
-				// Liga apenas se um dos dois pontos pode ser mostrado
-				if (!pts[i].isDisplayed() && !pts[i+1].isDisplayed()) {	
+				if (!pts[i].isDisplayed() && !pts[i+1].isDisplayed()) {
 				} else {
 					singleLink(i, i+1);
 				}

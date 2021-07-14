@@ -5,9 +5,9 @@
 // Opções - Menu principal
 void menu_options() {
 	std::cout << "Dimensoes: " << WIDTH << "x" << HEIGHT << "px" << std::endl;
+	std::cout << "Escala atual: 1/" << scale << "px" << std::endl;
 	std::cout << "[f] Funcoes" << std::endl;
 	std::cout << "[p] Pontos" << std::endl;
-	std::cout << "[e] Mudar escala (atual: 1/" << graph.getScale() << "px)" << std::endl;
 	std::cout << "[outro] Alternar para o grafico" << std::endl;
 	std::cout << "[CTRL+C] Sair" << std::endl;
 	std::cout << ">";

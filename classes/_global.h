@@ -9,6 +9,7 @@
 #define MX_ABLE false             // Pode maximizar
 #define WIDTH 800                 // Largura
 #define HEIGHT 600                // Altura
+#define scale 25                  // Escala
 // Gráfico
 #define POINT_R 3                 // Raio do ponto em px
 #define GRID_COLOR 7              // Cor da grade
@@ -19,25 +20,21 @@ using std::vector;
 class Global {
 	private:
 		int color; // Cor atual (0-15)
-		int scale; // Escala
 		bool dots; // Mostrar pontos
 	
 	public:
 		// Construtor
-		Global(int c, int s, bool d) {
+		Global(int c, bool d) {
 			color = c;
-			scale = s;
 			dots = d;
 		}
 		
 		// Getters
 		int getColor() { return color; }
-		int getScale() { return scale; }
 		bool getDots() { return dots; }
 		
 		// Setters
 		void setColor(int c) { color = c; }
-		void setScale(int s) { scale = s; }
 		void setDots() { dots = !dots; }
 		
 		// Muda para a cor preta, atual, ou da função
@@ -60,10 +57,10 @@ class Global {
 			setcolor(GRID_COLOR);
 			floodfill(0, 0, GRID_COLOR);
 			// Linhas
-			for (int i = 0; i <= WIDTH; i += getScale()) {
+			for (int i = 0; i <= WIDTH; i += scale) {
 				line(i, 0, i, HEIGHT);
 			}
-			for (int i = 0; i <= HEIGHT; i += getScale()) {
+			for (int i = 0; i <= HEIGHT; i += scale) {
 				line(0, i, WIDTH, i);
 			}
 			// Eixos X e Y
@@ -85,5 +82,5 @@ class Global {
 };
 
 // Instância padrão
-Global graph(1, 10, true);
+Global graph(1, true);
 

@@ -47,6 +47,7 @@ Funct trigonometric(int t) {
 		Point p(x, y);
 		fn.addPoint(p);
 	}
+	if (t >= 3) fn.setType("trig3+");
 	fn.linkAll();
 	return fn;
 }

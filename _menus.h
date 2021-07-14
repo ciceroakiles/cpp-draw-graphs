@@ -35,22 +35,6 @@ void input(vector<Funct> &vf) {
 			subm_pts(vf);
 			dont_pause = true;
 		} break;
-		// Mudar escala
-		case 'e': {
-			bool width_ok = false, height_ok = false;
-			int scale;
-			do {
-				std::cout << std::endl << "Nova escala:\n>";
-				std::cin >> scale;
-				width_ok = ((WIDTH % scale == 0) && ((WIDTH/scale) % 2 == 0));
-				height_ok = ((HEIGHT % scale == 0) && ((HEIGHT/scale) % 2 == 0));
-				if (!width_ok || !height_ok) {
-					std::cout << "[!] Escala com problemas nos eixos.\n";
-				}
-			} while (!width_ok || !height_ok);
-			graph.setScale(scale);
-			redraw(vf);
-		} break;
 		default: {
 			dont_pause = true;
 			// Pausa para resultado do gráfico
@@ -222,8 +206,8 @@ void subm_pts(vector<Funct> &vf) {
 			case '4': {
 				std::cout << std::endl << "Pontos salvos:\n";
 				for (int i = 0; i < points.size(); i++) {
-					double x = points[i].getX()/graph.getScale();
-					double y = points[i].getY()/graph.getScale();
+					double x = points[i].getX()/scale;
+					double y = points[i].getY()/scale;
 					std::cout << i+1 << ") (" << x << ", " << y << ")" << std::endl;
 				}
 				std::cout << std::endl;
@@ -243,6 +227,8 @@ void subm_pts(vector<Funct> &vf) {
 					redraw(vf);
 				}
 			} break;
+			default: {
+			} break;
 		}
 	} while (op != '<');
 }
@@ -252,12 +238,12 @@ void redraw(vector<Funct> &vf) {
 	cleardevice();
 	graph.show_grid();
 	graph.blackColor();
-	// Pontos e segmentos (função index zero)
+	// Pontos (função index zero - f0)
 	vector<Point> points = vf[0].getPoints();
 	for (int i = 0; i < points.size(); i++) {
 		if (graph.getDots()) points[i].draw(POINT_R);
 	}
-	// Funções
+	// Segmentos da f0 e funções
 	for (int i = 0; i < vf.size(); i++) {
 		vf[i].draw_fun();
 	}

@@ -19,11 +19,11 @@ class Point {
 		}
 		
 	    // Getters (coordenadas)
-		double getX() { return x*graph.getScale(); }
-		double getY() { return y*graph.getScale(); }
+		double getX() { return x*scale; }
+		double getY() { return y*scale; }
 	    
 	    // Suporte ao círculo
-		double getR() { return r*graph.getScale(); }
+		double getR() { return r*scale; }
 		void set_radius(double r_param) {
 			r = r_param;
 		}
