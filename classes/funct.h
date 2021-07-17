@@ -39,13 +39,34 @@ class Funct {
 			lnk.push_back(pair);
 		}
 		
-		// Cria todos os segmentos observáveis
-		void linkAll() {
+		// n >= 2? Cria todos os segmentos observáveis
+		// n < 2? Otimiza a reta com apenas um segmento
+		void linkPoints(int n) {
+			vector<Point> newPts;
+			vector<int> link_out;
 			for (int i = 0; i < pts.size()-1; i++) {
-				if (!pts[i].isDisplayed() && !pts[i+1].isDisplayed()) {
+				bool p1 = pts[i].isDisplayed();
+				bool p2 = pts[i+1].isDisplayed();
+				if (n >= 2) {
+					// Liga todos os pontos presentes
+					if (!(!p1 && !p2)) {
+						singleLink(i, i+1);
+					}
 				} else {
-					singleLink(i, i+1);
+					// Busca pelos segmentos limite
+					if ((p1 || p2) && (!(p1 && p2))) {
+						link_out.push_back(i);
+						link_out.push_back(i+1);
+						if (link_out.size() == 4) break;
+					}
 				}
+			}
+			if (n < 2) {
+				// Garante que a reta terá apenas dois pontos
+				newPts.push_back(pts[link_out[0]]);
+				newPts.push_back(pts[link_out[3]]);
+				setPoints(newPts);
+				singleLink(0, 1);
 			}
 		}
 		

@@ -12,7 +12,7 @@ Funct polinomial_tn(vector<double> t) {
 	double step = (n >= 2) ? 0.25 : 1; // Intervalo de precisão entre os pontos
 	double lim = WIDTH/2;              // Limites superior e inferior
    	double x, y;
-	for (x = -lim; x <= lim; x += step) {
+   	for (x = -lim; x <= lim; x += step) {
 		y = 0;
    		// Soma dos termos t(i)x^(n-i)
 		for (int i = 0; i <= n; i++) {
@@ -21,7 +21,7 @@ Funct polinomial_tn(vector<double> t) {
 		Point p(x, y);
 		fn.addPoint(p);
 	}
-	fn.linkAll();
+	fn.linkPoints(n);
 	return fn;
 }
 
@@ -48,7 +48,7 @@ Funct trigonometric(int t) {
 		fn.addPoint(p);
 	}
 	if (t >= 3) fn.setType("trig3+");
-	fn.linkAll();
+	fn.linkPoints(3);
 	return fn;
 }
 
