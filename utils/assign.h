@@ -21,7 +21,7 @@ Funct polinomial_tn(vector<double> t) {
 		Point p(x, y);
 		fn.addPoint(p);
 	}
-	fn.linkPoints(n);
+	fn.linkPoints();
 	return fn;
 }
 
@@ -48,7 +48,7 @@ Funct trigonometric(int t) {
 		fn.addPoint(p);
 	}
 	if (t >= 3) fn.setType("trig3+");
-	fn.linkPoints(3);
+	fn.linkPoints();
 	return fn;
 }
 

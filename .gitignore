@@ -1,6 +1,4 @@
 GraphsProject.exe
-GraphsProject.dev
-GraphsProject.layout
-main.o
 Makefile.win
 gmon.out
+*.o
