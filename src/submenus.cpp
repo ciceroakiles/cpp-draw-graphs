@@ -1,15 +1,18 @@
-/*
- * Menus
- */
+//
+// Gráficos de funções com C++ e graphics.h
+// (input via console)
+//
 
-#include "utils/assign.h"
-#include "utils/formula.h"
-#include "utils/print.h"
+#include "../include/_formula.h"
+#include "../include/_print.h"
+#include "../include/sub.h"
 
-// Assinaturas de métodos
-void subm_fun(vector<Funct> &vf);
-void subm_pts(vector<Funct> &vf);
-void redraw(vector<Funct> &vf);
+// Instância padrão de um gráfico
+Graph graph(1, true);
+
+//
+// Submenus
+//
 
 // Procedimento auxiliar (limpeza de input)
 void clear_input() {
@@ -19,8 +22,13 @@ void clear_input() {
 
 // Loop principal
 void input(vector<Funct> &vf) {
+	// Desenha grid
+	graph.show_grid();
+	
 	bool dont_pause = false;
 	char op;
+	std::cout << "Dimensoes: " << WIDTH << "x" << HEIGHT << "px" << std::endl;
+	std::cout << "Escala atual: 1/" << scale << "px" << std::endl;
 	menu_options();
 	std::cin >> op;
 	// Escolhas
@@ -141,7 +149,7 @@ void subm_fun(vector<Funct> &vf) {
 		if (op != '<' && fx.toString().compare("") != 0) {
 			// Sucesso
 			fx.setColor(graph.getColor());
-			fx.draw_fun();
+			fx.draw_fun(graph);
 			std::cout << std::endl << "[!] No grafico: " << fx.toString() << std::endl;
 			vf.push_back(fx);
 			std::cout << "[!] Funcao salva.\n" << std::endl;
@@ -180,7 +188,7 @@ void subm_pts(vector<Funct> &vf) {
 				Point p(x, y);
 				if (p.isDisplayed()) {
 					graph.blackColor();
-					if (graph.getDots()) p.draw(POINT_R);
+					if (graph.getDots()) p.draw(POINT_R, graph);
 					graph.currentColor();
 					vf[0].addPoint(p);
 				} else {
@@ -198,7 +206,7 @@ void subm_pts(vector<Funct> &vf) {
 				// Desenha segmento
 				graph.blackColor();
 				vf[0].singleLink(pA-1, pB-1);
-				vf[0].draw_fun();
+				vf[0].draw_fun(graph);
 				graph.currentColor();
 				system("pause");
 			} break;
@@ -241,11 +249,91 @@ void redraw(vector<Funct> &vf) {
 	// Pontos (função index zero - f0)
 	vector<Point> points = vf[0].getPoints();
 	for (int i = 0; i < points.size(); i++) {
-		if (graph.getDots()) points[i].draw(POINT_R);
+		if (graph.getDots()) points[i].draw(POINT_R, graph);
 	}
 	// Segmentos da f0 e funções
 	for (int i = 0; i < vf.size(); i++) {
-		vf[i].draw_fun();
+		vf[i].draw_fun(graph);
 	}
+}
+
+string dotSwitch() {
+	return (graph.getDots() ? "(S)" : "(N)");
+}
+
+
+//
+// Atribuição dos pontos às funções
+//
+
+// Retorna uma função de grau n
+Funct polinomial_tn(vector<double> t) {
+	Funct fn;                          // Função que vai receber os pontos
+	int n = t.size()-1;                // Grau da função
+	double step = (n >= 2) ? 0.25 : 1; // Intervalo de precisão entre os pontos
+	double lim = WIDTH/2;              // Limites superior e inferior
+   	double x, y;
+   	for (x = -lim; x <= lim; x += step) {
+		y = 0;
+   		// Soma dos termos t(i)x^(n-i)
+		for (int i = 0; i <= n; i++) {
+			y += t[i]*pow(x, (n-i));
+		}
+		Point p(x, y);
+		fn.addPoint(p);
+	}
+	fn.linkPoints();
+	return fn;
+}
+
+// Retorna uma função do tipo círculo
+Funct circle_t2(vector<double> t) {
+	Funct fn;
+	Point p(t[0], t[1]);
+	p.set_radius(t[2]);
+	fn.addPoint(p);
+	fn.setType("circle");
+	return fn;
+}
+
+// Retorna uma função trigonométrica
+Funct trigonometric(int t) {
+	Funct fn;                            // Função que vai receber os pontos
+	double step = (t < 3) ? 0.25 : 0.01; // Intervalo de precisão entre os pontos
+	double lim = WIDTH/2;                // Limites superior e inferior
+   	double x, y;
+	for (x = -lim; x < lim; x += step) {
+		y = tr_select(x, t);
+		Point p(x, y);
+		fn.addPoint(p);
+	}
+	if (t >= 3) fn.setType("trig3+");
+	fn.linkPoints();
+	return fn;
+}
+
+// Procedimento auxiliar (escolha de função)
+double tr_select(double x, int t) {
+	switch (t) {
+		case 1: {
+			return sin(x);
+		} break;
+		case 2: {
+			return cos(x);
+		} break;
+		case 3: {
+			return tan(x);
+		} break;
+		case 4: {
+			return 1/sin(x);
+		} break;
+		case 5: {
+			return 1/cos(x);
+		} break;
+		case 6: {
+			return 1/tan(x);
+		} break;
+	}
+	return 0;
 }
 

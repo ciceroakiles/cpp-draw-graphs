@@ -2,8 +2,6 @@
  * Declaração e definição da classe Função
  */
 
-#include "point.h"
-
 // Representação de uma função
 class Funct {
 	private:
@@ -53,20 +51,20 @@ class Funct {
 		}
 		
 		// Desenho de uma função por segmentos
-		void draw_fun() {
-			graph.functColor(color);
+		void draw_fun(Graph gr) {
+			gr.functColor(color);
 			if (type.compare("circle") == 0) {
-				pts[0].draw(pts[0].getR());
+				pts[0].draw(pts[0].getR(), gr);
 			} else {
 				for (int i = 0; i < lnk.size(); i++) {
 					// Recupera pontos para desenhar
 					Point p1 = pts[lnk[i][0]];
 					Point p2 = pts[lnk[i][1]];
 					// Método externo (line)
-					graph.g_line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+					gr.g_line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 				}	
 			}
-			graph.currentColor();
+			gr.currentColor();
 		}
 };
 

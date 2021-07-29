@@ -2,8 +2,6 @@
  * Declaração e definição da classe Ponto
  */
 
-#include "_global.h"
-
 // Representação de um ponto
 class Point {
 	private:
@@ -37,8 +35,8 @@ class Point {
 		}
 		
 	    // Método externo (circle)
-		void draw(double radius) {
-			graph.g_circle(getX(), getY(), radius);
+		void draw(double radius, Graph gr) {
+			gr.g_circle(getX(), getY(), radius);
 		}
 };
 

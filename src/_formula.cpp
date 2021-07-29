@@ -1,13 +1,8 @@
-/*
- * Métodos para elaboração das fórmulas
- */
+//
+// Métodos para elaboração das fórmulas
+//
 
-#include <math.h>
-#include <sstream>
-#include <vector>
-using std::ostringstream;
-using std::string;
-using std::vector;
+#include "../include/_formula.h"
 
 // Troca as ocorrências de s1 por s2
 string replace_occurences(string str, string s1, string s2) {

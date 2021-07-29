@@ -1,11 +1,11 @@
-/*
- * Métodos de impressão
- */
+//
+// Métodos de impressão
+//
+
+#include "../include/_print.h"
 
 // Opções - Menu principal
 void menu_options() {
-	std::cout << "Dimensoes: " << WIDTH << "x" << HEIGHT << "px" << std::endl;
-	std::cout << "Escala atual: 1/" << scale << "px" << std::endl;
 	std::cout << "[f] Funcoes" << std::endl;
 	std::cout << "[p] Pontos" << std::endl;
 	std::cout << "[outro] Alternar para o grafico" << std::endl;
@@ -43,7 +43,7 @@ void subm_fun_tr_opt() {
 // Opções - Pontos
 void subm_pts_opt() {
 	std::cout << "Principal > Pontos" << std::endl;
-	std::cout << "[1] Mostrar pontos " << (graph.getDots() ? "(S)" : "(N)") << std::endl;
+	std::cout << "[1] Mostrar pontos " << dotSwitch() << std::endl;
 	std::cout << "[2] Marcar um ponto" << std::endl;
 	std::cout << "[3] Ligar dois pontos" << std::endl;
 	std::cout << "[4] Pontos salvos" << std::endl;

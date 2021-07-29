@@ -1,30 +1,17 @@
 /*
- * Definições de alcance global
+ * Declaração e definição da classe Gráfico
  */
 
-#include <graphics.h>
-#include <vector>
-// Janela
-#define TITLE "Gráfico da função" // Título
-#define MX_ABLE false             // Pode maximizar
-#define WIDTH 800                 // Largura
-#define HEIGHT 600                // Altura
-#define scale 25                  // Escala
-// Gráfico
-#define POINT_R 3                 // Raio do ponto em px
-#define GRID_COLOR 7              // Cor da grade
-#define AXIS_COLOR 0              // Cor dos eixos
-using std::string;
-using std::vector;
+#include "__global.h"
 
-class Global {
+class Graph {
 	private:
 		int color; // Cor atual (0-15)
 		bool dots; // Mostrar pontos
 	
 	public:
 		// Construtor
-		Global(int c, bool d) {
+		Graph(int c, bool d) {
 			color = c;
 			dots = d;
 		}
@@ -80,7 +67,4 @@ class Global {
 			line(WIDTH/2 + x1, HEIGHT/2 - y1, WIDTH/2 + x2, HEIGHT/2 - y2);
 		}
 };
-
-// Instância padrão
-Global graph(1, true);
 
